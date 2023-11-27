@@ -1,0 +1,39 @@
+create rrhh;
+use rrhh;
+
+CREATE TABLE departamentos (
+    idDepartamento INT PRIMARY KEY AUTO_INCREMENT,
+    nombreDepartamento VARCHAR(255),
+    horasMinimas INT,
+    gastosDepartamentos INT
+);
+
+CREATE TABLE empleados (
+    idEmpleado INT PRIMARY KEY AUTO_INCREMENT,
+    nombreEmpleado VARCHAR(255),
+    apellidoEmpleado VARCHAR(255),
+    sueldoEmpleado INT,
+    puestoEmpleado VARCHAR(255),
+    horasTrabajadas INT,
+    idDepartamento INT,
+    FOREIGN KEY (idDepartamento) REFERENCES departamentos(idDepartamento)
+);
+
+CREATE TABLE usuario (
+    idUsuario INT PRIMARY KEY AUTO_INCREMENT,
+    nombreUsuario VARCHAR(255),
+    contraseñaUsuario VARCHAR(255),
+    tipoUsuario VARCHAR(50)
+);
+
+INSERT INTO departamentos (nombreDepartamento, horasMinimas, gastosDepartamentos)
+VALUES ('Software', 40, 0);
+
+INSERT INTO departamentos (nombreDepartamento, horasMinimas, gastosDepartamentos)
+VALUES ('Harware', 35, 0);
+
+INSERT INTO departamentos (nombreDepartamento, horasMinimas, gastosDepartamentos)
+VALUES ('Marketing', 30, 0);
+
+INSERT INTO departamentos (nombreDepartamento, horasMinimas, gastosDepartamentos)
+VALUES ('Directivos', 10, 0);

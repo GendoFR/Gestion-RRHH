@@ -9,33 +9,22 @@
   <head>
     <meta charset="utf-8">
     <title>Menu de RRHH</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styleMenu.css">
   </head>
-  <body>
-      <table>
-          <tr>
-              <td>
-                  <h5>Menu Principal</h5>
-              </td>
-          </tr>
-          <tr>
-              <td>
-                  <button id="uniqueButton" class="buttonStyle" onclick = "location.href='empleadosMenu.jsp'">Ver Empleados</button>
-              </td>
-              <td>
-                  <button id="uniqueButton" class="buttonStyle" onclick = "location.href='empleadosMenu.jsp'">Ver Departamentos</button>
-              </td>
-          </tr>
-          <tr>
-              <td>
-                  <button id="uniqueButton" class="buttonStyle" onclick = "location.href='empleadosMenu.jsp'">Ver Sueldo</button>
-              </td>
-          </tr>
-          <tr>
-              <td>
-                  <p><a href ="registro.jsp">Cerrar Sesión</a></p>
-              </td>
-          </tr>
-      </table>
+  <table>
+    <tr>
+      <td class = "centered" colspan="2"><h5>Menú Principal</h5></td>
+    </tr>
+    <tr>
+      <td><button onclick="location.href='empleadosMenu.jsp'">Ver Empleados</button></td>
+      <td><button onclick="location.href='menu.jsp'">Ver Departamentos</button></td>
+    </tr>
+    <tr>
+      <td class="centered" colspan="2"><button onclick="location.href='menu.jsp'">Ver Sueldos</button></td>
+    </tr>
+    <tr>
+      <td class="centered" colspan="2"><p><a href="index.jsp">Cerrar Sesión</a></p></td>
+    </tr>
+  </table>
   </body>
 </html>

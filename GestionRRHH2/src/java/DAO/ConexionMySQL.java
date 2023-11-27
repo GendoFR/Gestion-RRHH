@@ -13,7 +13,7 @@ import java.sql.ResultSet;*/
 public class ConexionMySQL {
     private static final String URL = "jdbc:mysql://localhost:3306/rrhh";
     private static final String USUARIO = "root";
-    private static final String CONTRASENA = "123";
+    private static final String CONTRASENA = "";
     
     /*private static Connection conexion;
     private static PreparedStatement sentencia;
@@ -53,3 +53,4 @@ public class ConexionMySQL {
     }
     */
 }
+

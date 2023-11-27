@@ -1,12 +1,10 @@
 <%-- 
-    Document   : consultarEmpleado
-    Created on : 20 nov 2023, 19:09:08
+    Document   : consultarEmpleadoXPuesto
+    Created on : 25 nov 2023, 21:04:23
     Author     : gendo
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-
 <html>
     <link rel="stylesheet" href="style.css">
     <head>
@@ -14,9 +12,9 @@
         <title>Consultar Empleado</title>
     </head>
     <body>
-      <form class="form-login"method="post" action="ServletConsultaEmpleado">
-        <h5>Consulte El empleado</h5>
-        <input class="control" type="text" name="idEmpleadopedido" value="" placeholder="Codigo de Empleado">
+      <form class="form-login"method="post" action="resultadoConsultaPuesto.jsp">
+        <h5>Consulte El empleado por puesto</h5>
+        <input class="control" type="text" name="puestoEmpleado" value="" placeholder="Puesto de Empleado">
         <input class="boton" type="submit" name="btn-login" value="Consultar">
         <p><a href ="empleadosMenu.jsp">Volver a Menú empleados</a></p>
       </form>

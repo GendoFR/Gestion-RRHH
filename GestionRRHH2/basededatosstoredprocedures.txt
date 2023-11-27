@@ -1,0 +1,65 @@
+CREATE DEFINER=`root`@`localhost` PROCEDURE `consultarEmpleado`(IN id_param INT)
+BEGIN
+    DECLARE resultado TEXT DEFAULT '';
+    
+    SELECT GROUP_CONCAT(CONCAT(nombreEmpleado, ' ', apellidoEmpleado, ' ', sueldoEmpleado, ' ', puestoEmpleado, ' ', idDepartamento) SEPARATOR ', ') INTO resultado FROM empleados WHERE idEmpleado = id_param;
+
+    SELECT resultado AS ResultadoConcatenado;
+END
+
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `obtenerBono`(IN empleado_id INT, OUT resultado BOOLEAN)
+BEGIN
+    DECLARE empleado_horas_trabajadas INT;
+    DECLARE empleado_departamento_id INT;
+    DECLARE departamento_horas_minimas INT;
+
+    -- Obtener horasTrabajadas y idDepartamento del empleado
+    SELECT horasTrabajadas, idDepartamento INTO empleado_horas_trabajadas, empleado_departamento_id
+    FROM empleados
+    WHERE idEmpleado = empleado_id;
+
+    -- Obtener horasMinimas del departamento del empleado
+    SELECT horasMinimas INTO departamento_horas_minimas
+    FROM departamentos
+    WHERE idDepartamento = empleado_departamento_id;
+
+    -- Comparar horasTrabajadas con horasMinimas y asignar el resultado a la variable resultado
+    IF empleado_horas_trabajadas > departamento_horas_minimas THEN
+        SET resultado = TRUE;
+    ELSE
+        SET resultado = FALSE;
+    END IF;
+END
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `VerificarUsuario`(
+    IN p_nombre_usuario VARCHAR(255),
+    IN p_contrasena_usuario VARCHAR(255),
+    OUT p_existe_usuario BOOLEAN,
+    OUT p_contrasena_correcta BOOLEAN,
+    OUT p_es_admin BOOLEAN
+)
+BEGIN
+    -- Verificar si el usuario existe
+    SELECT COUNT(*) INTO p_existe_usuario
+    FROM usuarios
+    WHERE nombreUsuario = p_nombre_usuario;
+
+    -- Verificar si la contraseña es correcta
+    IF p_existe_usuario > 0 THEN
+        SELECT contrasenaUsuario = p_contrasena_usuario INTO p_contrasena_correcta
+        FROM usuarios
+        WHERE nombreUsuario = p_nombre_usuario;
+    ELSE
+        SET p_contrasena_correcta = FALSE;
+    END IF;
+
+    -- Verificar si el usuario es administrador
+    IF p_existe_usuario > 0 AND p_contrasena_correcta THEN
+        SELECT es_administrador INTO p_es_admin
+        FROM usuarios
+        WHERE nombreUsuario = p_nombre_usuario;
+    ELSE
+        SET p_es_admin = FALSE;
+    END IF;
+END

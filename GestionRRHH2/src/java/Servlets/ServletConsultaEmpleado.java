@@ -27,20 +27,20 @@ public class ServletConsultaEmpleado extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             
             metodosSQL metodos = new metodosSQL();
-            String idEmpleado = null;
-            idEmpleado = request.getParameter(idEmpleado);
+            String idEmpleado = request.getParameter("idEmpleadopedido");
             
             out.println("<!DOCTYPE html>");
             out.println("<html>");
-            
-            String consultaEmpleado = metodos.consultarEmpleado(1);
+            out.println("<script type=\"text/javascript\">");
+            String consultaEmpleado = metodos.consultarEmpleado(idEmpleado);
             if(consultaEmpleado != ""){
                 out.println("alert('El empleado es: "+consultaEmpleado+".')");
+                out.println("location = 'consultarEmpleado.jsp'");
             }
             else{
                 out.println("alert('No existe un empleado con la id, "+idEmpleado+".')");
             }
-
+            out.println("</script>");
             out.println("<body>");
             out.println("</body>");
             out.println("</html>");
