@@ -15,12 +15,12 @@
     <body>
         <form class="form-login"method="post" action="ServletAnadirEmpleado">
             <h5>Ingrese al empleado</h5>
-            <input class="control" type="text" name="nombreEmpleado" value="" placeholder="Nombre del Empleado">
-            <input class="control" type="text" name="apellidoEmpleado" value="" placeholder="Apellido del Empleado">
-            <input class="control" type="text" name="sueldoEmpleado" value="" placeholder="Sueldo del Empleado">
-            <input class="control" type="text" name="horasTrabajadas" value="" placeholder="Horas trabajadas">
-            <input class="control" type="text" name="puestoEmpleado" value="" placeholder="Puesto del Empleado">
-            <select id="idDepartamento" name="idDepartamento" >
+            <input class="control" type="text" name="nombreEmpleado" value="" placeholder="Nombre del Empleado" required>
+            <input class="control" type="text" name="apellidoEmpleado" value="" placeholder="Apellido del Empleado" required>
+            <input class="control" type="text" name="sueldoEmpleado" value="" placeholder="Sueldo del Empleado" required>
+            <input class="control" type="text" name="horasTrabajadas" value="" placeholder="Horas trabajadas" required>
+            <input class="control" type="text" name="puestoEmpleado" value="" placeholder="Puesto del Empleado" required>
+            <select id="idDepartamento" name="idDepartamento" required>
                 <option value="" disabled selected>Departamento</option>
                 <option value="1">Software</option>
                 <option value="2">Hardware</option>
@@ -28,7 +28,7 @@
                 <option value="4">Directivos</option>
             </select>
             <input class="boton" type="submit" name="btn-login" value="Ingresar">
-            <p><a href ="empleadosMenuAdmin.jsp">¿Deseas volver?</a></p>
+            <p><a href ="empleadosMenu.jsp">¿Deseas volver?</a></p>
         </form>
     </body>
 </html>

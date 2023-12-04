@@ -9,12 +9,12 @@
     <link rel="stylesheet" href="style.css">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Consultar Empleado</title>
+        <title>Empleado por Puesto</title>
     </head>
     <body>
       <form class="form-login"method="post" action="resultadoConsultaPuesto.jsp">
-        <h5>Consulte El empleado por puesto</h5>
-        <input class="control" type="text" name="puestoEmpleado" value="" placeholder="Puesto de Empleado">
+        <h5>Consulte empleados por puesto</h5>
+        <input class="control" type="text" name="puestoEmpleado" value="" placeholder="Puesto de Empleado" required>
         <input class="boton" type="submit" name="btn-login" value="Consultar">
         <p><a href ="empleadosMenu.jsp">Volver a Menú empleados</a></p>
       </form>

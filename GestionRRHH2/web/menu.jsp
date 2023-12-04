@@ -17,10 +17,10 @@
     </tr>
     <tr>
       <td><button onclick="location.href='empleadosMenu.jsp'">Ver Empleados</button></td>
-      <td><button onclick="location.href='menu.jsp'">Ver Departamentos</button></td>
+      <td><button onclick="location.href='departamentosMenu.jsp'">Ver Departamentos</button></td>
     </tr>
     <tr>
-      <td class="centered" colspan="2"><button onclick="location.href='menu.jsp'">Ver Sueldos</button></td>
+      <td class="centered" colspan="2"><button onclick="location.href='sueldosMenu.jsp'">Ver Sueldos</button></td>
     </tr>
     <tr>
       <td class="centered" colspan="2"><p><a href="index.jsp">Cerrar Sesión</a></p></td>

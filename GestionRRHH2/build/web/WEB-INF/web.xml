@@ -13,12 +13,16 @@
         <servlet-class>Servlets.ServletConsultaEmpleado</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ServletAñadirEmpleado</servlet-name>
-        <servlet-class>Servlets.ServletAñadirEmpleado</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>ServletConsultaPuesto</servlet-name>
         <servlet-class>Servlets.ServletConsultaPuesto</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletSueldoEmpleado</servlet-name>
+        <servlet-class>Servlets.ServletSueldoEmpleado</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletAñadirEmpleado</servlet-name>
+        <servlet-class>Servlets.ServletAñadirEmpleado</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ServletLogin</servlet-name>
@@ -33,11 +37,15 @@
         <url-pattern>/ServletConsultaEmpleado</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ServletAñadirEmpleado</servlet-name>
-        <url-pattern>/ServletAnadirEmpleado</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>ServletConsultaPuesto</servlet-name>
         <url-pattern>/ServletConsultaPuesto</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletSueldoEmpleado</servlet-name>
+        <url-pattern>/ServletSueldoEmpleado</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletAñadirEmpleado</servlet-name>
+        <url-pattern>/ServletAnadirEmpleado</url-pattern>
     </servlet-mapping>
 </web-app>

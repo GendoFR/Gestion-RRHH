@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author gendo
  */
-public class ServletAñadirEmpleado extends HttpServlet {
+public class ServletSueldoEmpleado extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -29,7 +29,6 @@ public class ServletAñadirEmpleado extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
-     * @throws java.sql.SQLException
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
@@ -37,24 +36,18 @@ public class ServletAñadirEmpleado extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             
             metodosSQL metodos = new metodosSQL();
-            String nombreEmpleado = request.getParameter("nombreEmpleado");
-            String apellidoEmpleado = request.getParameter("apellidoEmpleado");
-            String sueldoEmpleado = request.getParameter("sueldoEmpleado");
-            String horasTrabajadas = request.getParameter("horasTrabajadas");
-            String puestoEmpleado = request.getParameter("puestoEmpleado");
-            String idDepartamento = request.getParameter("idDepartamento");
+            String idEmpleado = request.getParameter("idEmpleadopedido");
             
             out.println("<!DOCTYPE html>");
-            out.println("<html>");out.println("<script type=\"text/javascript\">");
-            
-            boolean empleadoCreado = metodos.ingresarEmpleado(nombreEmpleado, apellidoEmpleado, sueldoEmpleado, horasTrabajadas, puestoEmpleado, idDepartamento);
-                if(empleadoCreado == true){
-                out.println("alert('Has añadido al empleado "+nombreEmpleado + " " +apellidoEmpleado+".')");
-                out.println("location = 'añadirEmpleadoAdmin.jsp'");
+            out.println("<html>");
+            out.println("<script type=\"text/javascript\">");
+            int sueldoEmpleado = metodos.consultarSueldoEmpleado(idEmpleado);
+            if(sueldoEmpleado != 0){
+                out.println("alert('El sueldo empleado, contando bonos o deducciones, es: "+sueldoEmpleado+".')");
+                out.println("location = 'consultarSueldoEmpleado.jsp'");
             }
             else{
-                out.println("alert('Pe causa :(.')");
-                out.println("location = 'añadirEmpleadoAdmin.jsp'");
+                out.println("alert('No existe un empleado con la id numero "+idEmpleado+".')");
             }
             out.println("</script>");
             out.println("<body>");
@@ -78,7 +71,7 @@ public class ServletAñadirEmpleado extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (SQLException ex) {
-            Logger.getLogger(ServletAñadirEmpleado.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ServletConsultaEmpleado.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -96,7 +89,7 @@ public class ServletAñadirEmpleado extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (SQLException ex) {
-            Logger.getLogger(ServletAñadirEmpleado.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ServletConsultaEmpleado.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

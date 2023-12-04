@@ -34,11 +34,18 @@ public class ServletConsultaEmpleado extends HttpServlet {
             out.println("<script type=\"text/javascript\">");
             String consultaEmpleado = metodos.consultarEmpleado(idEmpleado);
             if(consultaEmpleado != ""){
-                out.println("alert('El empleado es: "+consultaEmpleado+".')");
-                out.println("location = 'consultarEmpleado.jsp'");
+                if(consultaEmpleado != "0"){
+                    out.println("alert('El empleado es: "+consultaEmpleado+".')");
+                    out.println("location = 'consultarEmpleado.jsp'");                    
+                }
+                else{
+                    out.println("alert('No existe un empleado con la id "+idEmpleado+".')");
+                    out.println("location = 'consultarEmpleado.jsp'");
+                }
             }
             else{
-                out.println("alert('No existe un empleado con la id, "+idEmpleado+".')");
+                out.println("alert('No existe un empleado con la id "+idEmpleado+".')");
+                out.println("location = 'consultarEmpleado.jsp'");
             }
             out.println("</script>");
             out.println("<body>");

@@ -12,9 +12,11 @@
         <title>Empleado por Puesto</title>
     </head>
     <body>
-      <form class="form-login"method="post" action="resultadoConsultaPuesto.jsp">
-        <h5>Consulte empleados por puesto</h5>
+      <form class="form-login"method="post" action="resultadoConsultaSueldoPuesto.jsp">
+        <h5>Consulte empleados por sueldo y puesto</h5>
         <input class="control" type="text" name="puestoEmpleado" value="" placeholder="Puesto de Empleado" required>
+        <input class="control" type="text" name="sueldoMin" value="" placeholder="Sueldo minimo" required>
+        <input class="control" type="text" name="sueldoMax" value="" placeholder="Sueldo maximo" required>
         <input class="boton" type="submit" name="btn-login" value="Consultar">
         <p><a href ="empleadosMenu.jsp">Volver a Menú empleados</a></p>
       </form>

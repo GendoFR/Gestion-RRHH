@@ -142,18 +142,23 @@ public class metodosSQL {
             result = statement.executeQuery();
 
             if (result.next()) {
-                consultaTotal = result.getString("Resultado"); // Obtener el valor devuelto por la función
-                cStatement = (CallableStatement) conexion.prepareCall("{CALL obtenerBono(?,?)}");
-                cStatement.setString(1, idEmpleado);
-                cStatement.registerOutParameter(2, Types.BOOLEAN);
-                cStatement.executeUpdate();
-                bono = cStatement.getBoolean(2);
-                
-                if(bono == true){
-                    consultaTotal = consultaTotal + " Tiene un bono!";
+                if(idEmpleado != "0"){
+                    consultaTotal = result.getString("Resultado"); // Obtener el valor devuelto por la función
+                    cStatement = (CallableStatement) conexion.prepareCall("{CALL obtenerBono(?,?)}");
+                    cStatement.setString(1, idEmpleado);
+                    cStatement.registerOutParameter(2, Types.BOOLEAN);
+                    cStatement.executeUpdate();
+                    bono = cStatement.getBoolean(2);
+
+                    if(bono == true){
+                        consultaTotal = consultaTotal + " Tiene un bono!";
+                    }
+                    else{
+                        consultaTotal = consultaTotal + " Tiene una deducción...";
+                    }
                 }
                 else{
-                    consultaTotal = consultaTotal + " Tiene una deducción...";
+                    consultaTotal = "0";
                 }
             } 
             else {
@@ -190,7 +195,7 @@ public class metodosSQL {
                 System.out.println(resultIns);
                 ingreso = true; // Se logró añadir al empleado
                 System.out.println("Se añadió al empleado con nombre: " +nombreEmpleado+", apellido: "+apellidoEmpleado+", sueldo: "+sueldoEmpleado+", con horas: "+horasTrabajadas+", con puesto: "+puestoEmpleado+" y departamento N°"+idDepartamento+".");
-                consulta = "UPDATE departamentos SET gastosDepartamentos = gastosDepartamentos + (SELECT SUM(sueldoEmpleado) FROM empleados WHERE idDepartamento = departamentos.idDepartamento) WHERE idDepartamento = ?;";
+                /*consulta = "UPDATE departamentos SET gastosDepartamentos = gastosDepartamentos + (SELECT SUM(sueldoEmpleado) FROM empleados WHERE idDepartamento = departamentos.idDepartamento) WHERE idDepartamento = ?;";
                 statement = conexion.prepareCall(consulta);
                 statement.setString(1,idDepartamento );
                 resultIns = statement.executeUpdate();
@@ -200,7 +205,7 @@ public class metodosSQL {
                 }
                 else{
                     System.out.println("pe causa");
-                }
+                }*/ // Se comentó ya que se pudo hacer el trigger que hace exacatemente esto. :) gracias anabella!!
             }
             else{
                 ingreso = false;
@@ -217,35 +222,79 @@ public class metodosSQL {
         return ingreso;
     }
     
-    public List<empleado> filtrarPorPuesto(String puesto) throws SQLException {
-        List<empleado> empleados = new ArrayList<>();
+        public ResultSet filtrarPorPuesto(String puesto) throws SQLException {
         try {
             String consulta = "SELECT * FROM empleados WHERE puestoEmpleado = ?";
             try (PreparedStatement statement = conexion.prepareStatement(consulta)) {
                 statement.setString(1, puesto);
-                try (ResultSet resultSet = statement.executeQuery()) {
-                    while (resultSet.next()) {
-                        empleado empleado = new empleado();
-                        empleado.setId(resultSet.getInt("idEmpleado"));
-                        empleado.setNombre(resultSet.getString("nombreEmpleado"));
-                        empleado.setApellido(resultSet.getString("apellidoEmpleado"));
-                        empleado.setPuesto(resultSet.getString("puestoEmpleado"));
-                        empleado.setSueldo(resultSet.getInt("sueldoEmpleado"));
-                        empleado.setHoras(resultSet.getInt("horasTrabajadas"));
-                        empleado.setIdDep(resultSet.getInt("idDepartamento"));
-                        // Agrega más atributos según tu tabla
+                return statement.executeQuery();
+            }
+        } catch (SQLException e) {
+            System.out.println("Error " + e);
+            throw e; // Relanza la excepción para que la capa superior pueda manejarla
+        }
+    }
+        
+        public String obtenerDepMayorGasto() throws SQLException{
+            String mensaje = "";
+            try {
+                String consulta = "SELECT idDepartamento, nombreDepartamento, gastosDepartamentos FROM departamentos ORDER BY gastosDepartamentos DESC LIMIT 1";
+                statement = conexion.prepareStatement(consulta);
+                result = statement.executeQuery();
+                if (result.next()) {
+                    int idDepartamento = result.getInt("idDepartamento");
+                    String nombreDepartamento = result.getString("nombreDepartamento");
+                    int gastosDepartamentos = result.getInt("gastosDepartamentos");
+                    mensaje = "El departamento que más gastó fue el N° " + idDepartamento + ", llamado " + nombreDepartamento + " y habiendo gastado un total de $" + gastosDepartamentos + ".";
+                } else {
+                    mensaje = "No se encontraron departamentos.";
+                }
 
-                        empleados.add(empleado);
-                    }
+            } catch (SQLException e) {
+                // Manejar excepciones
+                e.printStackTrace();
+            } finally {
+                // Cerrar recursos
+                try {
+                    if (result != null) result.close();
+                    if (statement != null) statement.close();
+                    if (conexion != null) conexion.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
             }
-        } 
-        catch (SQLException e) {
-            System.out.println("Error " + e);
+
+            return mensaje;
         }
-        return empleados;
-    }
+        
+        public int consultarSueldoEmpleado(String idEmpleado) throws SQLException {
+            int sueldoFinal = 0; // Declarar la variable fuera del bloque try-catch
+            boolean bono = false;
+            try {
+                conexion = ConexionMySQL.obtenerConexion();
+                String consulta = "call CalcularSueldoConBono(?, ?)";
+                cStatement = (CallableStatement) conexion.prepareCall(consulta);
+                cStatement.setString(1, idEmpleado);
+                cStatement.registerOutParameter(2, Types.INTEGER);
+                cStatement.executeUpdate();
+                sueldoFinal = cStatement.getInt(2);
+                if(sueldoFinal != 0){
+                    System.out.println(sueldoFinal);
+                    return sueldoFinal;
+                }
+                else{
+                    return 0;
+                }
+            } catch (SQLException e) {
+                System.out.println("Error " + e);
+                System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
+            } finally {
+                if (conexion != null) {
+                    conexion.close();
+                }
+            }
+            return sueldoFinal;
+        }
 }
-    
 
 

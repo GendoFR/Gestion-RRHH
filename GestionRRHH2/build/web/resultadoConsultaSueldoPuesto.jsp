@@ -1,6 +1,6 @@
 <%-- 
-    Document   : resultadoConsultaPuesto
-    Created on : 25 nov 2023, 21:00:31
+    Document   : resultadoConsultaSueldo
+    Created on : 27 nov 2023, 17:59:02
     Author     : gendo
 --%>
 
@@ -20,7 +20,7 @@
 <link rel="stylesheet" href="styleMenu.css">
 <html>
 <head>
-    <title>Consulta por Puesto</title>
+    <title>Consulta por Puesto y Sueldo</title>
 </head>
 <body>
 <div style="justify-content: center; display: flex; align-items: center; flex-direction: column; margin-top: 200px;">
@@ -29,10 +29,15 @@
 
         if (conexion != null) {
             try {
-                String consulta = "SELECT * FROM empleados WHERE puestoEmpleado = ?";
+                String consulta = "SELECT * FROM empleados WHERE puestoEmpleado = ? AND sueldoEmpleado BETWEEN ? AND ?";
                 PreparedStatement statement = conexion.prepareStatement(consulta);
                 String puesto = request.getParameter("puestoEmpleado");
+                String min = request.getParameter("sueldoMin");
+                String max = request.getParameter("sueldoMax");
                 statement.setString(1, puesto);
+                statement.setString(2, min);
+                statement.setString(3, max);
+                System.out.println("Puesto: "+ puesto + "Minimo: " + min + " Maximo: " + max);
                 ResultSet resultSet = statement.executeQuery();
 
                 out.println("<table border='1'>");
@@ -40,6 +45,7 @@
                 + "<th>ID de Empleado</th>"
                 + "<th>Nombre</th>"
                 + "<th>Apellido</th>"
+                + "<th>Puesto</th>"
                 + "<th>Sueldo</th>"
                 + "<th>Horas</th>"
                 + "<th>Id de Departamento</th>"
@@ -50,6 +56,7 @@
                     out.println("<td>" + resultSet.getInt("idEmpleado") + "</td>");
                     out.println("<td>" + resultSet.getString("nombreEmpleado") + "</td>");
                     out.println("<td>" + resultSet.getString("apellidoEmpleado") + "</td>");
+                    out.println("<td>" + resultSet.getString("puestoEmpleado") + "</td>");
                     out.println("<td>" + resultSet.getString("sueldoEmpleado") + "</td>");
                     out.println("<td>" + resultSet.getString("horasTrabajadas") + "</td>");
                     String departamento = resultSet.getString("idDepartamento");
@@ -61,8 +68,9 @@
                     }
                     out.println("</tr>");
                 }
+                
                 out.println("<tr>");
-                out.println("<td colspan = 6>" + "<p><a href = 'consultarEmpleadoXPuesto.jsp'>Volver a Consulta</a></td>" + "</td>");
+                out.println("<td colspan = 7>" + "<p><a href = 'consultarEmpleadoXSueldoPuesto.jsp'>Volver a Consulta</a></td>" + "</td>");
                 out.println("</tr>");
                 out.println("</table>");
 

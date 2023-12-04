@@ -1,13 +1,17 @@
-create rrhh;
-use rrhh;
+DROP DATABASE rrhh IF EXISTS;
+CREATE DATABASE rrhh;
+USE rrhh;
 
+DROP TABLE IF EXISTS departamentos;
 CREATE TABLE departamentos (
     idDepartamento INT PRIMARY KEY AUTO_INCREMENT,
     nombreDepartamento VARCHAR(255),
     horasMinimas INT,
-    gastosDepartamentos INT
+    gastosDepartamentos INT,
+    politicaBono INT 
 );
 
+DROP TABLE IF EXISTS empleados;
 CREATE TABLE empleados (
     idEmpleado INT PRIMARY KEY AUTO_INCREMENT,
     nombreEmpleado VARCHAR(255),
@@ -19,6 +23,7 @@ CREATE TABLE empleados (
     FOREIGN KEY (idDepartamento) REFERENCES departamentos(idDepartamento)
 );
 
+DROP TABLE IF EXISTS usuario;
 CREATE TABLE usuario (
     idUsuario INT PRIMARY KEY AUTO_INCREMENT,
     nombreUsuario VARCHAR(255),
@@ -26,14 +31,23 @@ CREATE TABLE usuario (
     tipoUsuario VARCHAR(50)
 );
 
-INSERT INTO departamentos (nombreDepartamento, horasMinimas, gastosDepartamentos)
-VALUES ('Software', 40, 0);
+INSERT INTO empleados(nombreEmpleado, apellidoEmpleado, sueldoEmpleado, puestoEmpleado, horasTrabajadas, idDepartamento) VALUES('Iago Agustin', 'Almiron', 200000 , 'Programador', 89 , 1);
+INSERT INTO empleados(nombreEmpleado, apellidoEmpleado, sueldoEmpleado, puestoEmpleado, horasTrabajadas, idDepartamento) VALUES('Alejandro Damian Ernesto', 'Bacca', 13, 'Vabagundo', 0 , null);
+INSERT INTO empleados(nombreEmpleado, apellidoEmpleado, sueldoEmpleado, puestoEmpleado, horasTrabajadas, idDepartamento) VALUES('Tomás', 'Coch', 100000 , 'Analista de Sistemas', 15, 3);
+INSERT INTO empleados(nombreEmpleado, apellidoEmpleado, sueldoEmpleado, puestoEmpleado, horasTrabajadas, idDepartamento) VALUES('Quimey', 'Garay Quevedo', 50000, 'Analista de Mercado', 10, 3);
+INSERT INTO empleados(nombreEmpleado, apellidoEmpleado, sueldoEmpleado, puestoEmpleado, horasTrabajadas, idDepartamento) VALUES('Lisandro Nazareno', 'Lobosco', 300000 , 'Jefazo', 100, 4);
+INSERT INTO empleados(nombreEmpleado, apellidoEmpleado, sueldoEmpleado, puestoEmpleado, horasTrabajadas, idDepartamento) VALUES('Ana', 'Lobosco de Armas', 300000, 'Jefaza', 100, 4);
+INSERT INTO empleados(nombreEmpleado, apellidoEmpleado, sueldoEmpleado, puestoEmpleado, horasTrabajadas, idDepartamento) VALUES('Joaquin Guillermo Hernan', 'Valles', 169000, 'Soldador', 90, 3);
+INSERT INTO empleados(nombreEmpleado, apellidoEmpleado, sueldoEmpleado, puestoEmpleado, horasTrabajadas, idDepartamento) VALUES('Damian Franco', 'Silva', 517000, 'CEO Marketing', 160, 3);
+INSERT INTO empleados(nombreEmpleado, apellidoEmpleado, sueldoEmpleado, puestoEmpleado, horasTrabajadas, idDepartamento) VALUES('Guido', 'Schneider', 101 , 'Embajador Bolivia', 200, 3);
+INSERT INTO empleados(nombreEmpleado, apellidoEmpleado, sueldoEmpleado, puestoEmpleado, horasTrabajadas, idDepartamento) VALUES('Jeremias Roman', 'Leiva', 20000 , 'Armador', 78, 2);
 
-INSERT INTO departamentos (nombreDepartamento, horasMinimas, gastosDepartamentos)
-VALUES ('Harware', 35, 0);
+INSERT INTO departamentos(nombreDepartamento, horasMinimas, gastosDepartamentos, politicaBono) VALUES('Software', 40, 0,50);
+INSERT INTO departamentos(nombreDepartamento, horasMinimas, gastosDepartamentos, politicaBono) VALUES('Software', 49, 0,35);
+INSERT INTO departamentos(nombreDepartamento, horasMinimas, gastosDepartamentos, politicaBono) VALUES('Software', 48, 0,20);
+INSERT INTO departamentos(nombreDepartamento, horasMinimas, gastosDepartamentos, politicaBono) VALUES('Software', 47, 0,25);
 
-INSERT INTO departamentos (nombreDepartamento, horasMinimas, gastosDepartamentos)
-VALUES ('Marketing', 30, 0);
-
-INSERT INTO departamentos (nombreDepartamento, horasMinimas, gastosDepartamentos)
-VALUES ('Directivos', 10, 0);
+INSERT INTO usuario(nombreUsuario, contraseñaUsuario, tipoUsuario) VALUES('iago','iago','administrador');
+INSERT INTO usuario(nombreUsuario, contraseñaUsuario, tipoUsuario) VALUES('tomasCoch','tomathy','user');
+INSERT INTO usuario(nombreUsuario, contraseñaUsuario, tipoUsuario) VALUES('pepitoGonzales','joquin0212','user');
+INSERT INTO usuario(nombreUsuario, contraseñaUsuario, tipoUsuario) VALUES('anabella','deCouto','administrador');

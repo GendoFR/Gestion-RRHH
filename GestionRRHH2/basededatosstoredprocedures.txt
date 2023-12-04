@@ -1,3 +1,89 @@
+CREATE DEFINER=`root`@`localhost` PROCEDURE `CalcularSueldoConBono`(IN empleado_id INT, OUT sueldo_con_bono INT)
+BEGIN
+    DECLARE sueldo_empleado INT;
+    DECLARE id_departamento INT;
+    DECLARE porcentaje_bono INT;
+    DECLARE horas_trabajadas INT;
+    DECLARE bono BOOLEAN;
+
+    -- Obtener sueldo del empleado
+    SELECT sueldoEmpleado INTO sueldo_empleado
+    FROM empleados
+    WHERE idEmpleado = empleado_id;
+
+    -- Obtener idDepartamento del empleado
+    SELECT idDepartamento INTO id_departamento
+    FROM empleados
+    WHERE idEmpleado = empleado_id;
+
+    -- Obtener porcentajeBono del departamento
+    SELECT politicaBono INTO porcentaje_bono
+    FROM departamentos
+    WHERE idDepartamento = id_departamento;
+
+    -- Verificar si el empleado tiene derecho a bono usando la stored procedure obtenerBono
+    CALL obtenerBono(empleado_id, bono);
+
+    -- Calcular sueldo con bono o deducción según el resultado de obtenerBono
+    IF bono THEN
+        -- Sumar el porcentaje de bono al sueldo
+        SET sueldo_con_bono = sueldo_empleado + (sueldo_empleado * porcentaje_bono / 100);
+    ELSE
+        -- Restar el porcentaje de bono al sueldo
+        SET sueldo_con_bono = sueldo_empleado - (sueldo_empleado * porcentaje_bono / 100);
+    END IF;
+END
+
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `CalcularTotalSueldosConBono`(OUT total_sueldos_con_bono INT)
+BEGIN
+    DECLARE empleado_id INT;
+    DECLARE sueldo_con_bono_empleado INT;
+
+    -- Declarar variables para manejar el cursor
+    DECLARE done INT DEFAULT FALSE;
+    DECLARE cur_empleados CURSOR FOR SELECT idEmpleado FROM empleados;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+    -- Inicializar la variable total_sueldos_con_bono
+    SET total_sueldos_con_bono = 0;
+
+    -- Inicializar el cursor
+    OPEN cur_empleados;
+
+    -- Bucle para recorrer la tabla de empleados
+    mi_bucle: LOOP
+        -- Obtener el siguiente empleado
+        FETCH cur_empleados INTO empleado_id;
+
+        -- Comprobar si hemos llegado al final de la tabla
+        IF done THEN
+            LEAVE mi_bucle;
+        END IF;
+
+        -- Calcular sueldo con bono usando la función CalcularSueldoConBono
+        CALL CalcularSueldoConBono(empleado_id, sueldo_con_bono_empleado);
+
+        -- Acumular el sueldo con bono al total
+        SET total_sueldos_con_bono = total_sueldos_con_bono + sueldo_con_bono_empleado;
+    END LOOP;
+
+    -- Cerrar el cursor
+    CLOSE cur_empleados;
+END
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ConcatenarValores`(IN id_param INT)
+BEGIN
+    DECLARE resultado TEXT DEFAULT '';
+    
+    SELECT GROUP_CONCAT(CONCAT(nombreEmpleado, ' ', apellidoEmpleado, ' ', sueldoEmpleado, ' ', puestoEmpleado, ' ', idDepartamento) SEPARATOR ', ') INTO resultado
+    FROM empleados
+    WHERE idEmpleado = id_param;
+
+    SELECT resultado AS ResultadoConcatenado;
+END
+
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `consultarEmpleado`(IN id_param INT)
 BEGIN
     DECLARE resultado TEXT DEFAULT '';
@@ -30,6 +116,18 @@ BEGIN
     ELSE
         SET resultado = FALSE;
     END IF;
+END
+
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `obtenerDepartamentoMayorGasto`(OUT idDepartamento INT, OUT gastosMaximos DECIMAL(10, 2))
+BEGIN
+    DECLARE maxGasto DECIMAL(10, 2);
+    -- Obtener el gasto máximo
+    SELECT MAX(gastosDepartamentos) INTO maxGasto FROM departamentos;
+    -- Obtener el id del departamento asociado al gasto máximo
+    SELECT idDepartamento INTO idDepartamento FROM departamentos WHERE gastosDepartamentos = maxGasto;
+    -- Asignar el gasto máximo a la variable de salida
+    SET gastosMaximos = maxGasto;
 END
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `VerificarUsuario`(

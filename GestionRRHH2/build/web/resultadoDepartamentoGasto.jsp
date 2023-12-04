@@ -1,9 +1,8 @@
 <%-- 
-    Document   : resultadoConsultaPuesto
-    Created on : 25 nov 2023, 21:00:31
+    Document   : resultadoDepartamentoGasto
+    Created on : 2 dic 2023, 14:57:05
     Author     : gendo
 --%>
-
 <%@page import="DAO.metodosSQL"%>
 <%@page import="clases.empleado"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -20,7 +19,7 @@
 <link rel="stylesheet" href="styleMenu.css">
 <html>
 <head>
-    <title>Consulta por Puesto</title>
+    <title>Departamento con mayor gasto</title>
 </head>
 <body>
 <div style="justify-content: center; display: flex; align-items: center; flex-direction: column; margin-top: 200px;">
@@ -29,40 +28,31 @@
 
         if (conexion != null) {
             try {
-                String consulta = "SELECT * FROM empleados WHERE puestoEmpleado = ?";
+                String consulta = "SELECT * FROM departamentos ORDER BY gastosDepartamentos DESC LIMIT 1;";
                 PreparedStatement statement = conexion.prepareStatement(consulta);
-                String puesto = request.getParameter("puestoEmpleado");
-                statement.setString(1, puesto);
                 ResultSet resultSet = statement.executeQuery();
 
                 out.println("<table border='1'>");
                 out.println("<tr>"
-                + "<th>ID de Empleado</th>"
-                + "<th>Nombre</th>"
-                + "<th>Apellido</th>"
-                + "<th>Sueldo</th>"
-                + "<th>Horas</th>"
-                + "<th>Id de Departamento</th>"
+                + "<th>ID de Departamento</th>"
+                + "<th>Nombre de Departamento</th>"
+                + "<th>Horas Minimas</th>"
+                + "<th>Gasto de Departamento</th>"
+                + "<th>Porcentaje de Bono</th>"
                 + "</tr>");
 
                 while (resultSet.next()) {
                     out.println("<tr>");
-                    out.println("<td>" + resultSet.getInt("idEmpleado") + "</td>");
-                    out.println("<td>" + resultSet.getString("nombreEmpleado") + "</td>");
-                    out.println("<td>" + resultSet.getString("apellidoEmpleado") + "</td>");
-                    out.println("<td>" + resultSet.getString("sueldoEmpleado") + "</td>");
-                    out.println("<td>" + resultSet.getString("horasTrabajadas") + "</td>");
-                    String departamento = resultSet.getString("idDepartamento");
-                    if(departamento != null){
-                    out.println("<td>" + departamento + "</td>");
-                    }
-                    else{
-                    out.println("<td>Sin Departamento</td>");
-                    }
+                    out.println("<td>" + resultSet.getInt("idDepartamento") + "</td>");
+                    out.println("<td>" + resultSet.getString("nombreDepartamento") + "</td>");
+                    out.println("<td>" + resultSet.getInt("horasMinimas") + "</td>");
+                    out.println("<td>" + resultSet.getInt("gastosDepartamentos") + "</td>");
+                    out.println("<td>" +"%"+ resultSet.getInt("politicaBono") + "</td>");
                     out.println("</tr>");
                 }
+                
                 out.println("<tr>");
-                out.println("<td colspan = 6>" + "<p><a href = 'consultarEmpleadoXPuesto.jsp'>Volver a Consulta</a></td>" + "</td>");
+                out.println("<td colspan = 5>" + "<p><a href = 'departamentosMenu.jsp'>Volver a Menú</a></td>" + "</td>");
                 out.println("</tr>");
                 out.println("</table>");
 

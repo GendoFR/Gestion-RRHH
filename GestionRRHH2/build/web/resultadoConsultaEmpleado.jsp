@@ -1,6 +1,6 @@
 <%-- 
-    Document   : resultadoConsultaPuesto
-    Created on : 25 nov 2023, 21:00:31
+    Document   : resultadoConsultaEmpleado
+    Created on : 3 dic 2023, 21:28:44
     Author     : gendo
 --%>
 
@@ -29,29 +29,29 @@
 
         if (conexion != null) {
             try {
-                String consulta = "SELECT * FROM empleados WHERE puestoEmpleado = ?";
+                String consulta = "SELECT * FROM empleados WHERE idEmpleado = ?";
                 PreparedStatement statement = conexion.prepareStatement(consulta);
-                String puesto = request.getParameter("puestoEmpleado");
-                statement.setString(1, puesto);
+                String idEmpleadopedido = request.getParameter("idEmpleadopedido");
+                statement.setString(1, idEmpleadopedido);
                 ResultSet resultSet = statement.executeQuery();
 
                 out.println("<table border='1'>");
                 out.println("<tr>"
-                + "<th>ID de Empleado</th>"
                 + "<th>Nombre</th>"
                 + "<th>Apellido</th>"
                 + "<th>Sueldo</th>"
+                + "<th>Puesto</th>"
                 + "<th>Horas</th>"
                 + "<th>Id de Departamento</th>"
                 + "</tr>");
 
                 while (resultSet.next()) {
                     out.println("<tr>");
-                    out.println("<td>" + resultSet.getInt("idEmpleado") + "</td>");
                     out.println("<td>" + resultSet.getString("nombreEmpleado") + "</td>");
                     out.println("<td>" + resultSet.getString("apellidoEmpleado") + "</td>");
-                    out.println("<td>" + resultSet.getString("sueldoEmpleado") + "</td>");
-                    out.println("<td>" + resultSet.getString("horasTrabajadas") + "</td>");
+                    out.println("<td>" + resultSet.getInt("sueldoEmpleado") + "</td>");
+                    out.println("<td>" + resultSet.getString("puestoEmpleado") + "</td>");
+                    out.println("<td>" + resultSet.getInt("horasTrabajadas") + "</td>");
                     String departamento = resultSet.getString("idDepartamento");
                     if(departamento != null){
                     out.println("<td>" + departamento + "</td>");
@@ -62,7 +62,7 @@
                     out.println("</tr>");
                 }
                 out.println("<tr>");
-                out.println("<td colspan = 6>" + "<p><a href = 'consultarEmpleadoXPuesto.jsp'>Volver a Consulta</a></td>" + "</td>");
+                out.println("<td colspan = 6>" + "<p><a href = 'consultarEmpleado.jsp'>Volver a Consulta</a></td>" + "</td>");
                 out.println("</tr>");
                 out.println("</table>");
 

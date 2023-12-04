@@ -8,8 +8,8 @@
   <body>
       <form class="form-login"method="post" action="ServletLogin">
         <h5>Inicie Sesión</h5>
-        <input class="control" type="text" name="usuario" value="" placeholder="Usuario">
-        <input class="control" type="password" name="contrasena" value="" placeholder="Contraseña">
+        <input class="control" type="text" name="usuario" value="" placeholder="Usuario" required >
+        <input class="control" type="password" name="contrasena" value="" placeholder="Contraseña" required >
         <input class="boton" type="submit" name="btn-login" value="Ingresar">
         <p><a href ="registro.jsp">¿Quieres registrarte?</a></p>
       </form>

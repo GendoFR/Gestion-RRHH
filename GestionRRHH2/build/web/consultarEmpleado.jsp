@@ -14,9 +14,9 @@
         <title>Consultar Empleado</title>
     </head>
     <body>
-      <form class="form-login"method="post" action="ServletConsultaEmpleado">
+      <form class="form-login"method="post" action="resultadoConsultaEmpleado.jsp">
         <h5>Consulte El empleado</h5>
-        <input class="control" type="text" name="idEmpleadopedido" value="" placeholder="Codigo de Empleado">
+        <input class="control" type="text" name="idEmpleadopedido" value="" placeholder="Codigo de Empleado" required>
         <input class="boton" type="submit" name="btn-login" value="Consultar">
         <p><a href ="empleadosMenu.jsp">Volver a Menú empleados</a></p>
       </form>
